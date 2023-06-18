@@ -1,0 +1,8 @@
+.gallery__item {
+    position: relative;
+    display: block;
+    width: 282px;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+}

@@ -1,0 +1,27 @@
+.profile__gallery-add-button {
+    width: 100%;
+    height: 50px;
+    background-image: url(../../../images/add-button.svg);
+    background-color: #000;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 2px solid #fff;
+    cursor: pointer;
+    transition: opacity 0.5s ease;
+}
+
+@media screen and (max-width: 767px) {
+    .profile__gallery-add-button {
+        background-size: 16px 16px;
+    }
+}
+
+@media screen and (max-width: 620px) {
+    .profile__gallery-add-button {
+        width: 282px;
+    }
+}
+
+.profile__gallery-add-button:hover {
+    opacity: 0.6;
+}

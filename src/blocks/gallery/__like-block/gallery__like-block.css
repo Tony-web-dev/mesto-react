@@ -1,0 +1,6 @@
+.gallery__like-block {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    align-self: center;
+}
