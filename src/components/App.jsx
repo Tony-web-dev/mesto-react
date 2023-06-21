@@ -3,14 +3,14 @@ import Main from "./Main/Main.jsx";
 import Footer from "./Footer/Footer.jsx";
 import PopupWithForm from "./PopupWithForm/PopupWithForm.jsx";
 import PopupImage from "./PopupImage/PopupImage.jsx";
-import { useState } from "react";
+import React from "react";
 
 function App() {
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
-  const [selectedCard, setSelectedCard] = useState({});
-  const [isImagePopup, setIsImagePopup] = useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState({});
+  const [isImagePopup, setIsImagePopup] = React.useState(false);
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true)
