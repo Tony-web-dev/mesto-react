@@ -2,7 +2,7 @@ import React from "react";
 import api from "../../utils/api.js";
 import Card from "../Card/Card.jsx"
 
-export default function Main({onEditProfile, onEditAvatar, onAddPlace, onCardClick}) {
+export default function Main( {onEditProfile, onEditAvatar, onAddPlace, onCardClick} ) {
     const [userName, setUserName] = React.useState('');
     const [userDescription, setUserDescription] = React.useState('');
     const [userAvatar, setUserAvatar] = React.useState('');
@@ -31,9 +31,10 @@ export default function Main({onEditProfile, onEditAvatar, onAddPlace, onCardCli
                     onClick={onEditAvatar}
                 >
                     <img
-                    className="profile__avatar"
-                    src={userAvatar}
-                    alt="Аватар пользователя" />
+                        className="profile__avatar"
+                        src={userAvatar}
+                        alt="Аватар пользователя" 
+                    />
                 </button>
                 <div className="profile__info">
                     <div className="profile__name-block">
@@ -57,9 +58,7 @@ export default function Main({onEditProfile, onEditAvatar, onAddPlace, onCardCli
             <section className="gallery">
                 {cards.map(items => {
                     return (
-                        <div className="gallery__items" key={items._id}>
-                            <Card item={items} onCardClick={onCardClick}/>
-                        </div>
+                        <Card item={items} key={items._id} onCardClick={onCardClick}/>  
                     )
                 })}
             </section>

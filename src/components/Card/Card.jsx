@@ -1,4 +1,4 @@
-export default function Card({item, onCardClick}) {
+export default function Card( {item, onCardClick} ) {
     return (
         <div className="gallery__item">
             <button 
@@ -10,7 +10,7 @@ export default function Card({item, onCardClick}) {
             className="gallery__img"
             src={item.link}
             alt={`Фото ${item.name}`}
-            onClick={() => onCardClick({link: item.link, name: item.name})}
+            onClick={() => onCardClick( {link: item.link, name: item.name} )}
             />
             <div className="gallery__place">
                 <h2 className="gallery__heading">{item.name}</h2>
