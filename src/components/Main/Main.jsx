@@ -2,13 +2,11 @@ import { useState, useEffect } from "react";
 import api from "../../utils/api.js";
 import Card from "../Card/Card.jsx"
 
-export default function Main({onEditProfile, onEditAvatar, onAddPlace}) {
+export default function Main({onEditProfile, onEditAvatar, onAddPlace, onCardClick}) {
     const [userName, setUserName] = useState('');
     const [userDescription, setUserDescription] = useState('');
     const [userAvatar, setUserAvatar] = useState('');
     const [cards, setCards] = useState([])
-
-    console.log(cards);
 
     useEffect(() => {
         Promise.all([api.getUserInfo(), api.getInitialCards()]) 
@@ -63,7 +61,7 @@ export default function Main({onEditProfile, onEditAvatar, onAddPlace}) {
                 {cards.map(items => {
                     return (
                         <div className="gallery__items" key={items._id}>
-                            <Card item={items} />
+                            <Card item={items} onCardClick={onCardClick}/>
                         </div>
                     )
                 })}

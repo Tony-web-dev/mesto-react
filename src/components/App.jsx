@@ -9,6 +9,8 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState({});
+  const [isImagePopup, setIsImagePopup] = useState(false);
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true)
@@ -26,16 +28,13 @@ function App() {
     setIsEditProfilePopupOpen(false)
     setIsEditAvatarPopupOpen(false)
     setIsAddPlacePopupOpen(false)
+    setIsImagePopup(false)
   }
-  
 
-  // function handleDelete() {
-
-  // }
-
-  // function handleOpenBigPicture() {
-
-  // }
+  function handleCardClick(item) {
+    setSelectedCard(item);
+    setIsImagePopup(true);
+  }
 
   return (
     <div className="page">
@@ -45,6 +44,7 @@ function App() {
       onEditProfile = {handleEditProfileClick}
       onEditAvatar = {handleEditAvatarClick}
       onAddPlace = {handleAddPlaceClick}
+      onCardClick = {handleCardClick}
       />
 
       <Footer />
@@ -132,14 +132,17 @@ function App() {
         </label>
       </PopupWithForm>
 
-      
       <PopupWithForm 
         popupName='delete-gallery-item'
         formHeading='Вы уверены?'
         textBtn='Да'
       />
 
-     <PopupImage />
+     <PopupImage 
+      item={selectedCard}
+      isOpen={isImagePopup}
+      onClose={closeAllPopups}
+     />
 
 
     </div>
