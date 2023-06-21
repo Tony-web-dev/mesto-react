@@ -1,4 +1,4 @@
-export default function PopupImage( {item, isOpen, onClose} ) {
+export default function ImagePopup( {item, isOpen, onClose} ) {
     return (
         <div className={`popup popup_big-picture ${isOpen && 'popup_opened'}`}>
             <div className="popup__photo-container">

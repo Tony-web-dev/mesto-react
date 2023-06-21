@@ -3,14 +3,14 @@ import Header from "./Header/Header.jsx";
 import Main from "./Main/Main.jsx";
 import Footer from "./Footer/Footer.jsx";
 import PopupWithForm from "./PopupWithForm/PopupWithForm.jsx";
-import PopupImage from "./PopupImage/PopupImage.jsx";
+import ImagePopup from "./ImagePopup/ImagePopup.jsx";
 
 export default function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({});
-  const [isPopupImage, setIsPopupImage] = React.useState(false);
+  const [isImagePopup, setIsImagePopup] = React.useState(false);
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true)
@@ -28,12 +28,12 @@ export default function App() {
     setIsEditProfilePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsAddPlacePopupOpen(false);
-    setIsPopupImage(false)
+    setIsImagePopup(false)
   }
 
   function handleCardClick(item) {
     setSelectedCard(item);
-    setIsPopupImage(true);
+    setIsImagePopup(true);
   }
 
   return (
@@ -131,9 +131,9 @@ export default function App() {
         formHeading='Вы уверены?'
         textBtn='Да'
       />
-     <PopupImage 
+     <ImagePopup 
       item={selectedCard}
-      isOpen={isPopupImage}
+      isOpen={isImagePopup}
       onClose={closeAllPopups}
      />
     </div>
