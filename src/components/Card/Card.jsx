@@ -1,12 +1,17 @@
-export default function Card( {item, userID, onCardClick, onDeleteCard} ) {
+import { useContext } from "react";
+import CurrentUserContext from '../../contexts/CurrentUserContext.js';
+
+export default function Card( {item, onCardClick, onCardDelete} ) {
+    const currentUser = useContext(CurrentUserContext);
+
     return (
         <div className="gallery__item">
-            {userID === item.owner._id && 
+            {currentUser._id === item.owner._id && 
             <button 
             className="gallery__trash" 
             type="button" 
             aria-label="Удалить"
-            onClick={onDeleteCard}
+            onClick={onCardDelete}
             />}
             <img 
             className="gallery__img"
