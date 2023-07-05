@@ -1,4 +1,4 @@
-export default function ImagePopup( {item, isOpen, onClose} ) {
+export default function ImagePopup( {card, isOpen, onClose} ) {
     return (
         <div className={`popup popup_big-picture ${isOpen && 'popup_opened'}`}>
             <div className="popup__photo-container">
@@ -10,10 +10,10 @@ export default function ImagePopup( {item, isOpen, onClose} ) {
                 />
                 <img
                     className="popup__img"
-                    src={item.link}
-                    alt={`Фото ${item.name}`} 
+                    src={card.link}
+                    alt={`Фото ${card.name}`} 
                 />
-                <h2 className="popup__img-heading">{item.name}</h2>
+                <h2 className="popup__img-heading">{card.name}</h2>
             </div>
         </div>
     )

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "./Header/Header.jsx";
 import Main from "./Main/Main.jsx";
 import Footer from "./Footer/Footer.jsx";
+import EditProfilePopup from "./EditProfilePopup/EditProfilePopup.jsx";
 import PopupWithForm from "./PopupWithForm/PopupWithForm.jsx";
 import ImagePopup from "./ImagePopup/ImagePopup.jsx";
 import CurrentUserContext from "../contexts/CurrentUserContext.js";
@@ -13,7 +14,6 @@ export default function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
   const [isImagePopup, setIsImagePopup] = useState(false);
-  const [isDeleteCard, setIsDeleteCard] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -35,38 +35,55 @@ export default function App() {
     setIsEditAvatarPopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsImagePopup(false);
-    setIsDeleteCard(false);
   }
 
-  function handleCardClick(item) {
-    setSelectedCard(item);
+  function handleCardClick(card) {
+    setSelectedCard(card);
     setIsImagePopup(true);
   }
 
-  function handleCardDelete() {
-    setIsDeleteCard(true);
+  function handleCardLike(card) {
+    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    if(!isLiked) {
+      api.toLike(card._id)
+      .then((newCard) => {
+        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+      })
+      .catch(err => {
+        console.log(err);
+    });
+    } else {
+      api.toDislike(card._id)
+      .then((newCard) => {
+        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+      })
+      .catch(err => {
+        console.log(err);
+    });
+    }
   }
 
-  // function handleCardLike(item) {
-  //   const isLiked = item.likes.some(item => item._id === currentUser._id);
-  //   api.toLike(item._id, !isLiked)
-  //   .then(newCard =>
-  //     setCards((state) => state.map((c) => c._id === item._id ? newCard : c)))
-  // }
-
+  function handleCardDelete(card) {
+    api.deleteCard(card._id)
+    .then(res => {
+      })
+    .catch(err => {
+      console.log(err);
+    });
+  }
 
   useEffect(() => {
     setIsLoading(true);
     Promise.all([api.getUserInfo(), api.getInitialCards()]) 
-    .then(([user, items]) => {
+    .then(([user, cards]) => {
       setCurrentUser(user)
-      setCards(items);
+      setCards(cards);
       setIsLoading(false);
     })
     .catch(err => {
         console.log(err);
     });
-}, [])
+  }, [])
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -77,41 +94,18 @@ export default function App() {
         onEditAvatar = {handleEditAvatarClick}
         onAddPlace = {handleAddPlaceClick}
         onCardClick = {handleCardClick}
+        onCardLike={handleCardLike}
         onCardDelete = {handleCardDelete}
         cards={cards}
         isLoading={isLoading}
         />
         <Footer />
-        <PopupWithForm
-          formHeading='Редактировать профиль'
-          isOpen={isEditProfilePopupOpen}
-          onClose={closeAllPopups}
-        >
-          <label className="form__field">
-            <input
-              type="text"
-              className="form__input form__input_edit-name"
-              name="person"
-              minLength={2}
-              maxLength={40}
-              placeholder="Ваше имя"
-              required
-            />
-            <span className="form__message-error person-message-error" />
-          </label>
-          <label className="form__field">
-            <input
-              type="text"
-              className="form__input form__input_edit-about"
-              name="about"
-              minLength={2}
-              maxLength={200}
-              placeholder="Ваше призвание"
-              required
-            />
-            <span className="form__message-error about-message-error" />
-          </label>
-        </PopupWithForm>
+
+        <EditProfilePopup
+        isOpen={isEditProfilePopupOpen}
+        onClose={closeAllPopups}
+         />
+        
         <PopupWithForm 
           formHeading='Обновить аватар'
           isOpen={isEditAvatarPopupOpen}
@@ -157,16 +151,10 @@ export default function App() {
             <span className="form__message-error url-message-error" />
           </label>
         </PopupWithForm>
-        <PopupWithForm
-          formHeading='Вы уверены?'
-          textBtn='Да'
-          isOpen={isDeleteCard}
+        <ImagePopup 
+          card={selectedCard}
+          isOpen={isImagePopup}
           onClose={closeAllPopups}
-        />
-      <ImagePopup 
-        item={selectedCard}
-        isOpen={isImagePopup}
-        onClose={closeAllPopups}
       />
       </div>
     </CurrentUserContext.Provider>

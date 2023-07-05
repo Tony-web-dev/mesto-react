@@ -1,4 +1,4 @@
-import loadpic from "../../images/loader-dance.gif"
+import loadpic from "../../images/loader-ball.gif";
 
 export default function Loader() {
     return (
@@ -6,7 +6,7 @@ export default function Loader() {
             <img 
                 src={loadpic}
                 alt="загрузчик"
-                width={200}
+                width={150}
             />
         </div>
     )

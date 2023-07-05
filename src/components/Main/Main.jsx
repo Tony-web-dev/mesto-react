@@ -3,7 +3,7 @@ import Card from "../Card/Card.jsx"
 import CurrentUserContext from '../../contexts/CurrentUserContext.js';
 import Loader from '../Loader/Loader.jsx';
 
-export default function Main( {cards, onEditProfile, onEditAvatar, onAddPlace, onCardClick, onDeleteCard, isLoading} ) {
+export default function Main( {cards, onEditProfile, onEditAvatar, onAddPlace, onCardClick, onCardDelete, isLoading, onCardLike} ) {
     const currentUser = useContext(CurrentUserContext);
 
     return (
@@ -41,13 +41,14 @@ export default function Main( {cards, onEditProfile, onEditAvatar, onAddPlace, o
                 />
             </section>
             <section className="gallery">
-                {isLoading ? <Loader /> : cards.map(items => {
+                {isLoading ? <Loader /> : cards.map(cards => {
                     return (
                         <Card 
-                        item={items} 
-                        key={items._id} 
+                        card={cards} 
+                        key={cards._id} 
                         onCardClick={onCardClick} 
-                        onDeleteCard={onDeleteCard}
+                        onCardLike={onCardLike}
+                        onCardDelete={onCardDelete}
                         />  
                     )
                 })}
