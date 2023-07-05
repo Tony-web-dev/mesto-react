@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import Header from "./Header/Header.jsx";
 import Main from "./Main/Main.jsx";
 import Footer from "./Footer/Footer.jsx";
@@ -6,11 +6,11 @@ import PopupWithForm from "./PopupWithForm/PopupWithForm.jsx";
 import ImagePopup from "./ImagePopup/ImagePopup.jsx";
 
 export default function App() {
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState({});
-  const [isImagePopup, setIsImagePopup] = React.useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState({});
+  const [isImagePopup, setIsImagePopup] = useState(false);
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true)
@@ -46,8 +46,7 @@ export default function App() {
       onCardClick = {handleCardClick}
       />
       <Footer />
-      <PopupWithForm 
-        popupName='edit-profile'
+      <PopupWithForm
         formHeading='Редактировать профиль'
         textBtn='Сохранить'
         isOpen={isEditProfilePopupOpen}
@@ -79,7 +78,6 @@ export default function App() {
         </label>
       </PopupWithForm>
       <PopupWithForm 
-        popupName='edit-avatar'
         formHeading='Обновить аватар'
         textBtn='Сохранить'
         isOpen={isEditAvatarPopupOpen}
@@ -96,8 +94,7 @@ export default function App() {
           <span className="form__message-error avatar-message-error" />
         </label>
       </PopupWithForm>
-      <PopupWithForm 
-        popupName='add-gallery-item'
+      <PopupWithForm
         formHeading='Новое место'
         textBtn='Создать'
         isOpen={isAddPlacePopupOpen}
@@ -126,8 +123,7 @@ export default function App() {
           <span className="form__message-error url-message-error" />
         </label>
       </PopupWithForm>
-      <PopupWithForm 
-        popupName='delete-gallery-item'
+      <PopupWithForm
         formHeading='Вы уверены?'
         textBtn='Да'
       />
