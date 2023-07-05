@@ -11,6 +11,7 @@ export default function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
   const [isImagePopup, setIsImagePopup] = useState(false);
+  const [isDeleteCard, setIsDeleteCard] = useState(false);
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true)
@@ -28,12 +29,17 @@ export default function App() {
     setIsEditProfilePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsAddPlacePopupOpen(false);
-    setIsImagePopup(false)
+    setIsImagePopup(false);
+    setIsDeleteCard(false);
   }
 
   function handleCardClick(item) {
     setSelectedCard(item);
     setIsImagePopup(true);
+  }
+
+  function handleDeleteCard() {
+    setIsDeleteCard(true);
   }
 
   return (
@@ -44,6 +50,7 @@ export default function App() {
       onEditAvatar = {handleEditAvatarClick}
       onAddPlace = {handleAddPlaceClick}
       onCardClick = {handleCardClick}
+      onDeleteCard = {handleDeleteCard}
       />
       <Footer />
       <PopupWithForm
@@ -60,7 +67,7 @@ export default function App() {
             minLength={2}
             maxLength={40}
             placeholder="Ваше имя"
-            required=""
+            required
           />
           <span className="form__message-error person-message-error" />
         </label>
@@ -72,7 +79,7 @@ export default function App() {
             minLength={2}
             maxLength={200}
             placeholder="Ваше призвание"
-            required=""
+            required
           />
           <span className="form__message-error about-message-error" />
         </label>
@@ -89,7 +96,7 @@ export default function App() {
             className="form__input form__input_edit-avatar"
             name="avatar"
             placeholder="Ссылка на картинку"
-            required=""
+            required
           />
           <span className="form__message-error avatar-message-error" />
         </label>
@@ -108,7 +115,7 @@ export default function App() {
             minLength={2}
             maxLength={30}
             placeholder="Название"
-            required=""
+            required
           />
           <span className="form__message-error heading-message-error" />
         </label>
@@ -118,7 +125,7 @@ export default function App() {
             className="form__input form__input_add-url"
             name="url"
             placeholder="Ссылка на картинку"
-            required=""
+            required
           />
           <span className="form__message-error url-message-error" />
         </label>
@@ -126,6 +133,8 @@ export default function App() {
       <PopupWithForm
         formHeading='Вы уверены?'
         textBtn='Да'
+        isOpen={isDeleteCard}
+        onClose={closeAllPopups}
       />
      <ImagePopup 
       item={selectedCard}

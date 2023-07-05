@@ -1,11 +1,13 @@
-export default function Card( {item, onCardClick} ) {
+export default function Card( {item, userID, onCardClick, onDeleteCard} ) {
     return (
         <div className="gallery__item">
+            {userID === item.owner._id && 
             <button 
             className="gallery__trash" 
             type="button" 
-            aria-label="Удалить" 
-            />
+            aria-label="Удалить"
+            onClick={onDeleteCard}
+            />}
             <img 
             className="gallery__img"
             src={item.link}
@@ -20,7 +22,7 @@ export default function Card( {item, onCardClick} ) {
                         type="button"
                         aria-label="Поставить лайк"
                     />
-                    <p className="gallery__like-counter">0</p>
+                    <p className="gallery__like-counter">{item.likes.length}</p>
                 </div>
             </div>
         </div>

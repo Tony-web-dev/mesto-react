@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import api from "../../utils/api.js";
 import Card from "../Card/Card.jsx"
 
-export default function Main( {onEditProfile, onEditAvatar, onAddPlace, onCardClick} ) {
+export default function Main( {onEditProfile, onEditAvatar, onAddPlace, onCardClick, onDeleteCard} ) {
     const [userName, setUserName] = useState('');
     const [userDescription, setUserDescription] = useState('');
     const [userAvatar, setUserAvatar] = useState('');
+    const [userID, setUserID] = useState('');
     const [cards, setCards] = useState([])
 
     useEffect(() => {
@@ -14,7 +15,8 @@ export default function Main( {onEditProfile, onEditAvatar, onAddPlace, onCardCl
             setUserName(user.name);
             setUserDescription(user.about);
             setUserAvatar(user.avatar);
-            setCards(items)
+            setUserID(user._id);
+            setCards(items);
         })
         .catch(err => {
             console.log(err);
@@ -58,7 +60,13 @@ export default function Main( {onEditProfile, onEditAvatar, onAddPlace, onCardCl
             <section className="gallery">
                 {cards.map(items => {
                     return (
-                        <Card item={items} key={items._id} onCardClick={onCardClick}/>  
+                        <Card 
+                        item={items} 
+                        key={items._id} 
+                        userID={userID}
+                        onCardClick={onCardClick} 
+                        onDeleteCard={onDeleteCard}
+                        />  
                     )
                 })}
             </section>
