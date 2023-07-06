@@ -85,6 +85,18 @@ export default function App() {
     });
   }, [])
 
+  function handleUpdateUser(user, reset) {
+    api.setUserInfo(user)
+    .then(res => {
+      setCurrentUser(res)
+      closeAllPopups()
+      reset()
+    })
+    .catch(err => {
+      console.log(err);
+  });
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -104,6 +116,7 @@ export default function App() {
         <EditProfilePopup
         isOpen={isEditProfilePopupOpen}
         onClose={closeAllPopups}
+        onUpdateUser={handleUpdateUser}
          />
         
         <PopupWithForm 

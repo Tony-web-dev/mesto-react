@@ -3,7 +3,7 @@ import useForm from "../../utils/useForm";
 import PopupWithForm from "../PopupWithForm/PopupWithForm";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-export default function EditProfilePopup( {isOpen, onClose}) {
+export default function EditProfilePopup( {isOpen, onClose, onUpdateUser}) {
     const currentUser = useContext(CurrentUserContext)
     const { values, errors, handleChange, reset, setBeginingValues } = useForm()
 
@@ -17,12 +17,17 @@ export default function EditProfilePopup( {isOpen, onClose}) {
         reset({person: currentUser.name, about: currentUser.about})
     }
 
+    function handleSubmit(e) {
+      e.preventDefault();
+      onUpdateUser({person: values.person, about: values.about}, reset)
+    }
+
     return (
         <PopupWithForm
           formHeading='Редактировать профиль'
-          textBtn='Сохранить'
           isOpen={isOpen}
           onClose={resetForClose}
+          onSubmit={handleSubmit}
         >
           <label className="form__field">
             <input
