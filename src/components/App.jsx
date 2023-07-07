@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import Header from "./Header/Header.jsx";
 import Main from "./Main/Main.jsx";
 import Footer from "./Footer/Footer.jsx";
+import api from "../utils/api.js";
+import CurrentUserContext from "../contexts/CurrentUserContext.js";
 import EditProfilePopup from "./EditProfilePopup/EditProfilePopup.jsx";
 import EditAvatarPopup from "./EditAvatarPopup/EditAvatarPopup.jsx";
 import AddPlacePopup from "./AddPlacePopup/AddPlacePopup.jsx";
 import ImagePopup from "./ImagePopup/ImagePopup.jsx";
-import CurrentUserContext from "../contexts/CurrentUserContext.js";
-import api from "../utils/api.js";
-
 
 export default function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -20,16 +19,38 @@ export default function App() {
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    setIsLoading(true)
+    api.getInitialCards()
+    .then(cards => {
+       setCards(cards);
+       setIsLoading(false)
+     })
+     .catch((err) => {
+       console.log(err);
+     });
+ }, [])
+
+  useEffect(() => {
+    api.getUserInfo()
+    .then(res => {
+      setCurrentUser(res)
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }, [])
+
   function handleEditProfileClick() {
-    setIsEditProfilePopupOpen(true)
+    setIsEditProfilePopupOpen(true);
   }
 
   function handleEditAvatarClick() {
-    setIsEditAvatarPopupOpen(true)
+    setIsEditAvatarPopupOpen(true);
   }
 
   function handleAddPlaceClick() {
-    setIsAddPlacePopupOpen(true)
+    setIsAddPlacePopupOpen(true);
   }
 
   function closeAllPopups() {
@@ -39,8 +60,8 @@ export default function App() {
     setIsImagePopup(false);
   }
 
-  function handleCardClick(card) {
-    setSelectedCard(card);
+  function handleCardClick(item) {
+    setSelectedCard(item);
     setIsImagePopup(true);
   }
 
@@ -53,7 +74,7 @@ export default function App() {
       })
       .catch(err => {
         console.log(err);
-    });
+      });
     } else {
       api.toDislike(card._id)
       .then(res => {
@@ -61,34 +82,23 @@ export default function App() {
       })
       .catch(err => {
         console.log(err);
-    });
+      });
     }
   }
 
+  //не отрабатывает отрисовка отфильтрованных карточек, не понимаю
+  //как сказать "отрисуй всё кроме удаленной"
   function handleCardDelete(card) {
     api.deleteCard(card._id)
-    .then(() => {
+    .then(res => {
       setCards(cards.filter(card => {
-        return card !== card._id;
-      }))
-      })
+        return card._id;
+      }));
+    })
     .catch(err => {
       console.log(err);
     });
   }
-
-  useEffect(() => {
-    setIsLoading(true);
-    Promise.all([api.getUserInfo(), api.getInitialCards()]) 
-    .then(([user, cards]) => {
-      setCurrentUser(user);
-      setCards(cards);
-      setIsLoading(false);
-    })
-    .catch(err => {
-        console.log(err);
-    });
-  }, [])
 
   function handleUpdateUser(user, reset) {
     api.setUserInfo(user)
@@ -114,6 +124,7 @@ export default function App() {
     });
   }
 
+  //не закрывает попап и не рендерит карточки 
   function handleAddPlaceSubmit(cards, reset) {
     api.addCard(cards)
     .then(res => {
@@ -130,37 +141,39 @@ export default function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <Header />
+
         <Main
-          onEditProfile = {handleEditProfileClick}
-          onEditAvatar = {handleEditAvatarClick}
-          onAddPlace = {handleAddPlaceClick}
-          onCardClick = {handleCardClick}
-          onCardLike={handleCardLike}
-          onCardDelete = {handleCardDelete}
           cards={cards}
+          onEditProfile={handleEditProfileClick}
+          onEditAvatar={handleEditAvatarClick}
+          onAddPlace={handleAddPlaceClick}
+          onCardClick={handleCardClick}
+          onCardLike={handleCardLike}
+          onCardDelete ={handleCardDelete}
           isLoading={isLoading}
         />
+
         <Footer />
 
-        <EditProfilePopup
+        <EditProfilePopup 
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser}
-         />
-        
+        />
+
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
           onUpdateAvatar={handleUpdateAvatar}
         />
 
-        <AddPlacePopup
+        <AddPlacePopup 
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
           onAddPlace={handleAddPlaceSubmit}
         />
-        
-        <ImagePopup 
+
+        <ImagePopup
           card={selectedCard}
           isOpen={isImagePopup}
           onClose={closeAllPopups}
