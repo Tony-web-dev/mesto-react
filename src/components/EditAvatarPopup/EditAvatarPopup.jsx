@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import PopupWithForm from "../PopupWithForm/PopupWithForm";
 
-export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
+export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isSending }) {
   const input = useRef()
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
@@ -11,11 +11,11 @@ export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
     const value = e.target.value;
     const errorMessage = e.target.validationMessage;
     
-    setValues((outdatedValues) => {
+    setValues(outdatedValues => {
       return {...outdatedValues, [name]: value}
     })
     
-    setErrors((outdatedErrors) => {
+    setErrors(outdatedErrors => {
       return {...outdatedErrors, [name]:  errorMessage}
     })
   }
@@ -41,6 +41,7 @@ export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
       isOpen={isOpen}
       onClose={resetForClose}
       onSubmit={handleSubmit}
+      isSending={isSending}
     >
       <label className="form__field">
         <input

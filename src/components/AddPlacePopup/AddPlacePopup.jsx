@@ -2,7 +2,7 @@ import { useState } from "react";
 import PopupWithForm from "../PopupWithForm/PopupWithForm";
 
 
-export default function AddPlacePopup({isOpen, onClose, onAddPlace}) {
+export default function AddPlacePopup({isOpen, onClose, onAddPlace, isSending}) {
     const [values, setValues] = useState({});
     const [errors, setErrors] = useState({});
 
@@ -11,11 +11,11 @@ export default function AddPlacePopup({isOpen, onClose, onAddPlace}) {
         const value = e.target.value;
         const errorMessage = e.target.validationMessage;
     
-        setValues((outdatedValues) => {
+        setValues(outdatedValues => {
           return {...outdatedValues, [name]: value}
         })
     
-        setErrors((outdatedErrors) => {
+        setErrors(outdatedErrors => {
           return {...outdatedErrors, [name]:  errorMessage}
         })
     }
@@ -42,6 +42,7 @@ export default function AddPlacePopup({isOpen, onClose, onAddPlace}) {
         isOpen={isOpen}
         onClose={resetForClose}
         onSubmit={handleSubmit}
+        isSending={isSending}
       >
         <label className="form__field">
           <input
@@ -52,6 +53,7 @@ export default function AddPlacePopup({isOpen, onClose, onAddPlace}) {
             maxLength={30}
             placeholder="Название"
             value={values.heading ? values.heading : ''}
+            disabled={isSending}
             onChange={handleChange}
             required
           />

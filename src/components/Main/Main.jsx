@@ -44,11 +44,11 @@ export default function Main({cards, onEditProfile, onEditAvatar, onAddPlace, on
         {isLoading ? <Loader /> : cards.map((cards) => {
           return (
             <Card 
-            card={cards} 
-            key={cards._id} 
-            onCardClick={onCardClick}
-            onCardLike={onCardLike}
-            onCardDelete={onCardDelete}
+              card={cards} 
+              key={cards._id} 
+              onCardClick={onCardClick}
+              onCardLike={onCardLike}
+              onCardDelete={onCardDelete}
             />
           );
         })}

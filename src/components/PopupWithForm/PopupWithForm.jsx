@@ -1,4 +1,4 @@
-export default function PopupWithForm( {formHeading, textBtn, children, isOpen, onClose, onSubmit} ) {
+export default function PopupWithForm( {formHeading, textBtn, children, isOpen, onClose, onSubmit, isSending} ) {
     
     return (
         <div className={`popup ${isOpen && 'popup_opened'}`}>
@@ -17,8 +17,12 @@ export default function PopupWithForm( {formHeading, textBtn, children, isOpen, 
                     <h2 className="form__heading">{formHeading}</h2>
                     <fieldset className="form__set">
                         {children}
-                        <button className="form__save-button" type="submit">
-                        {textBtn || 'Сохранить'}
+                        <button
+                        className={`form__save-button ${isSending && 'form__save-button_disabled'}`} 
+                        type="submit"
+                        disabled={isSending}
+                        >
+                            {textBtn || 'Сохранить'}
                         </button>
                     </fieldset>
                 </form>

@@ -8,6 +8,7 @@ import EditProfilePopup from "./EditProfilePopup/EditProfilePopup.jsx";
 import EditAvatarPopup from "./EditAvatarPopup/EditAvatarPopup.jsx";
 import AddPlacePopup from "./AddPlacePopup/AddPlacePopup.jsx";
 import ImagePopup from "./ImagePopup/ImagePopup.jsx";
+import PopupWithForm from "./PopupWithForm/PopupWithForm.jsx";
 
 export default function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -15,9 +16,12 @@ export default function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
   const [isImagePopup, setIsImagePopup] = useState(false);
+  const [isRemoveCardPopupOpen, setIsRemoveCardPopupOpen] = useState(false);
+  const [isDeletedCard, setIsDeletedCard] = useState('');
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSending, setIsSending] = useState(false);
 
   useEffect(() => {
     setIsLoading(true)
@@ -53,11 +57,17 @@ export default function App() {
     setIsAddPlacePopupOpen(true);
   }
 
+  function handleRemoveCardClick(cardID) {
+    setIsDeletedCard(cardID);
+    setIsRemoveCardPopupOpen(true);
+  }
+
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsImagePopup(false);
+    setIsRemoveCardPopupOpen(false);
   }
 
   function handleCardClick(item) {
@@ -86,14 +96,16 @@ export default function App() {
     }
   }
 
-  //не отрабатывает отрисовка отфильтрованных карточек, не понимаю
-  //как сказать "отрисуй всё кроме удаленной"
-  function handleCardDelete(card) {
-    api.deleteCard(card._id)
+  function handleDeleteCardSubmit(e) {
+    e.preventDefault();
+    setIsSending(true);
+    api.deleteCard(isDeletedCard)
     .then(res => {
       setCards(cards.filter(card => {
-        return card._id;
-      }));
+        return card._id !== isDeletedCard;
+      }))
+      closeAllPopups();
+      setIsSending(false);
     })
     .catch(err => {
       console.log(err);
@@ -101,10 +113,12 @@ export default function App() {
   }
 
   function handleUpdateUser(user, reset) {
+    setIsSending(true);
     api.setUserInfo(user)
     .then(res => {
       setCurrentUser(res);
       closeAllPopups();
+      setIsSending(false);
       reset();
     })
     .catch(err => {
@@ -113,10 +127,12 @@ export default function App() {
   }
 
   function handleUpdateAvatar(user, reset) {
+    setIsSending(true);
     api.setAvatar(user)
     .then(res => {
       setCurrentUser(res);
       closeAllPopups();
+      setIsSending(false);
       reset();
     })
     .catch(err => {
@@ -124,12 +140,13 @@ export default function App() {
     });
   }
 
-  //не закрывает попап и не рендерит карточки 
-  function handleAddPlaceSubmit(cards, reset) {
-    api.addCard(cards)
+  function handleAddPlaceSubmit(newCard, reset) {
+    setIsSending(true);
+    api.addCard(newCard)
     .then(res => {
       setCards([res, ...cards]);
       closeAllPopups();
+      setIsSending(false);
       reset();
     })
     .catch(err => {
@@ -149,7 +166,7 @@ export default function App() {
           onAddPlace={handleAddPlaceClick}
           onCardClick={handleCardClick}
           onCardLike={handleCardLike}
-          onCardDelete ={handleCardDelete}
+          onCardDelete ={handleRemoveCardClick}
           isLoading={isLoading}
         />
 
@@ -159,19 +176,31 @@ export default function App() {
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser}
+          isSending={isSending}
         />
 
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
           onUpdateAvatar={handleUpdateAvatar}
+          isSending={isSending}
         />
 
         <AddPlacePopup 
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
           onAddPlace={handleAddPlaceSubmit}
+          isSending={isSending}
         />
+
+        <PopupWithForm
+          formHeading='Вы уверены?'
+          textBtn='Да'
+          isOpen={isRemoveCardPopupOpen}
+          onClose={closeAllPopups}
+          onSubmit={handleDeleteCardSubmit}
+          isSending={isSending}
+        /> 
 
         <ImagePopup
           card={selectedCard}

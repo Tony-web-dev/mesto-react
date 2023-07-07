@@ -11,10 +11,6 @@ function handleLikeClick() {
   onCardLike(card)
 }
 
-function handleDeleteClick() {
-  onCardDelete(card)
-}
-
   return (
     <div className="gallery__item">
       {isOwn && 
@@ -22,7 +18,7 @@ function handleDeleteClick() {
         className="gallery__trash" 
         type="button" 
         aria-label="Удалить"
-        onClick={handleDeleteClick}
+        onClick={() => onCardDelete(card._id)}
       />}
       <img
         className="gallery__img"

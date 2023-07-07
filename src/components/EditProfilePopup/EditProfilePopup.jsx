@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import PopupWithForm from "../PopupWithForm/PopupWithForm";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-export default function EditProfilePopup({isOpen, onClose, onUpdateUser}) {
+export default function EditProfilePopup({isOpen, onClose, onUpdateUser, isSending}) {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
   const currentUser = useContext(CurrentUserContext);
@@ -53,6 +53,7 @@ export default function EditProfilePopup({isOpen, onClose, onUpdateUser}) {
       isOpen={isOpen}
       onClose={resetForClose}
       onSubmit={handleSubmit}
+      isSending={isSending}
     >
       <label className="form__field">
         <input
@@ -63,6 +64,7 @@ export default function EditProfilePopup({isOpen, onClose, onUpdateUser}) {
           maxLength={40}
           placeholder="Ваше имя"
           value={values.person ? values.person : ''}
+          disabled={isSending}
           onChange={handleChange}
           required
         />
@@ -77,6 +79,7 @@ export default function EditProfilePopup({isOpen, onClose, onUpdateUser}) {
           maxLength={200}
           placeholder="Ваше призвание"
           value={values.about ? values.about : ''}
+          disabled={isSending}
           onChange={handleChange}
           required
         />
