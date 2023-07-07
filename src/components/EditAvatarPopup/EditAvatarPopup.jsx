@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import PopupWithForm from "../PopupWithForm/PopupWithForm";
 
 export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isSending }) {
-  const input = useRef()
+  const input = useRef();
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
 
@@ -12,11 +12,11 @@ export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isSen
     const errorMessage = e.target.validationMessage;
     
     setValues(outdatedValues => {
-      return {...outdatedValues, [name]: value}
-    })
+      return {...outdatedValues, [name]: value};
+    });
     
     setErrors(outdatedErrors => {
-      return {...outdatedErrors, [name]:  errorMessage}
+      return {...outdatedErrors, [name]:  errorMessage};
     })
   }
 
@@ -27,12 +27,12 @@ export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isSen
 
   function resetForClose() {
     onClose();
-    reset()
+    reset();
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    onUpdateAvatar({avatar: input.current.value}, reset)
+    onUpdateAvatar({avatar: input.current.value}, reset);
   }
 
   return (

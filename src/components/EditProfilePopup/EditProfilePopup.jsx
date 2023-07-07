@@ -2,10 +2,16 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import PopupWithForm from "../PopupWithForm/PopupWithForm";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-export default function EditProfilePopup({isOpen, onClose, onUpdateUser, isSending}) {
+export default function EditProfilePopup({ isOpen, onClose, onUpdateUser, isSending }) {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
   const currentUser = useContext(CurrentUserContext);
+
+  const setBeginingValues = useCallback((name, value) => {
+    setValues(outdatedValues => {
+      return {...outdatedValues, [name]: value}
+    }) 
+    }, [])
 
   function handleChange(e) {
     const name = e.target.name;
@@ -13,19 +19,13 @@ export default function EditProfilePopup({isOpen, onClose, onUpdateUser, isSendi
     const errorMessage = e.target.validationMessage;
 
     setValues(outdatedValues => {
-      return {...outdatedValues, [name]: value}
-    })
+      return {...outdatedValues, [name]: value};
+    });
 
     setErrors(outdatedErrors => {
-      return {...outdatedErrors, [name]:  errorMessage}
+      return {...outdatedErrors, [name]:  errorMessage};
     })
   }
-
- const setBeginingValues = useCallback((name, value) => {
-  setValues(outdatedValues => {
-    return {...outdatedValues, [name]: value}
-  }) 
-  }, [])
 
   useEffect(() => {
     setBeginingValues("person", currentUser.name)
@@ -86,5 +86,5 @@ export default function EditProfilePopup({isOpen, onClose, onUpdateUser, isSendi
         <span className="form__message-error">{errors.about}</span>
       </label>
     </PopupWithForm>
-  )
+  );
 }
