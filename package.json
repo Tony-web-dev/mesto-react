@@ -1,8 +1,8 @@
 {
-  "name": "mesto-react",
+  "name": "react-mesto-auth",
   "version": "0.1.0",
   "author": "Antonina Timush",
-  "homepage": "https://tony-web-dev.github.io/mesto-react/",
+  "homepage": "https://tony-web-dev.github.io/react-mesto-auth/",
   "private": true,
   "devDependencies": {
     "gh-pages": "^5.0.0"
