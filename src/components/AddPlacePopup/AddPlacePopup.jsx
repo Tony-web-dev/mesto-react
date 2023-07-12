@@ -1,28 +1,8 @@
-import { useState } from "react";
 import PopupWithForm from "../PopupWithForm/PopupWithForm";
+import useForm from "../../utils/useForm";
 
 export default function AddPlacePopup({ isOpen, onClose, onAddPlace, isSending }) {
-  const [values, setValues] = useState({});
-  const [errors, setErrors] = useState({});
-
-  function handleChange(e) {
-    const name = e.target.name;
-    const value = e.target.value;
-    const errorMessage = e.target.validationMessage;
-
-    setValues((outdatedValues) => {
-      return { ...outdatedValues, [name]: value };
-    });
-
-    setErrors((outdatedErrors) => {
-      return { ...outdatedErrors, [name]: errorMessage };
-    });
-  }
-
-  function reset(data = {}) {
-    setValues(data);
-    setErrors({});
-  }
+  const { values, errors, handleChange, reset } = useForm();
 
   function resetForClose() {
     onClose();

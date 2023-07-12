@@ -24,4 +24,4 @@
 
 *** 
 
-[Ссылка на проект GitPages (не уверена, что прогрузилось)](https://tony-web-dev.github.io/mesto-react/)
+[Ссылка на проект GitPages](https://tony-web-dev.github.io/mesto-react/)

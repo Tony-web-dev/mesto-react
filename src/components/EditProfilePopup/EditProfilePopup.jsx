@@ -1,41 +1,16 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import PopupWithForm from "../PopupWithForm/PopupWithForm";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
+import useForm from "../../utils/useForm";
 
 export default function EditProfilePopup({ isOpen, onClose, onUpdateUser, isSending }) {
-  const [values, setValues] = useState({});
-  const [errors, setErrors] = useState({});
   const currentUser = useContext(CurrentUserContext);
-
-  const setBeginingValues = useCallback((name, value) => {
-    setValues(outdatedValues => {
-      return {...outdatedValues, [name]: value}
-    }) 
-    }, [])
-
-  function handleChange(e) {
-    const name = e.target.name;
-    const value = e.target.value;
-    const errorMessage = e.target.validationMessage;
-
-    setValues(outdatedValues => {
-      return {...outdatedValues, [name]: value};
-    });
-
-    setErrors(outdatedErrors => {
-      return {...outdatedErrors, [name]:  errorMessage};
-    })
-  }
+  const { values, setBeginingValues, errors, handleChange, reset } = useForm();
 
   useEffect(() => {
     setBeginingValues("person", currentUser.name)
     setBeginingValues("about", currentUser.about)
   }, [currentUser, setBeginingValues])
-
-  function reset(data = {}) {
-    setValues(data);
-    setErrors({});
-  }
 
   function resetForClose() {
     onClose();
